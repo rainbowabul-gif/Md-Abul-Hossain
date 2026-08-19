@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 env:
-  LABEL_NAME: "Confirmed"          # label name to trigger auto-merge (case-sensitive)
+  LABEL_NAME: "confirmed"          # label name to trigger auto-merge (case-insensitive match)
   POLL_INTERVAL_MS: "10000"       # how often to poll checks (ms)
   MAX_WAIT_MINUTES: "30"          # how long to wait for checks to finish
   MERGE_METHOD: "merge"           # merge, squash, or rebase
@@ -27,7 +27,7 @@ jobs:
             const prNumber = context.payload.pull_request.number;
             const owner = context.repo.owner;
             const repo = context.repo.repo;
-            const labelName = process.env.LABEL_NAME || 'Confirmed';
+            const labelName = (process.env.LABEL_NAME || 'confirmed').toLowerCase();
             const pollInterval = parseInt(process.env.POLL_INTERVAL_MS || '10000', 10);
             const maxWaitMinutes = parseInt(process.env.MAX_WAIT_MINUTES || '30', 10);
             const mergeMethod = process.env.MERGE_METHOD || 'merge';
@@ -43,8 +43,8 @@ jobs:
 
             const pr = await getPr();
 
-            // Check label presence
-            const labels = (pr.labels || []).map(l => l.name);
+            // Check label presence (case-insensitive)
+            const labels = (pr.labels || []).map(l => (l.name || '').toLowerCase());
             if (!labels.includes(labelName)) {
               core.info(`Label "${labelName}" not present on PR #${prNumber}. Skipping auto-merge.`);
               return;
