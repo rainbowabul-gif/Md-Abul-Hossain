@@ -1,0 +1,22 @@
+{
+  "name": "Auto Merge Confirmed-ALL App",
+  "description": "GitHub App manifest for Auto Merge Confirmed-ALL. Automatically merge PRs labeled CONFIRMED-ALL after checks pass.",
+  "url": "https://your-deployment-url.example",
+  "hook_attributes": {
+    "url": "https://your-deployment-url.example/webhook"
+  },
+  "callback_urls": [
+    "https://your-deployment-url.example/"
+  ],
+  "public": false,
+  "default_permissions": {
+    "pull_requests": "write",
+    "checks": "read",
+    "statuses": "read",
+    "contents": "read",
+    "metadata": "read"
+  },
+  "default_events": [
+    "pull_request"
+  ]
+}
